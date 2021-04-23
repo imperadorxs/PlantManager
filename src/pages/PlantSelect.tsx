@@ -44,7 +44,6 @@ const PlantSelect = () => {
       setfilteredPlants(plants);
     }
 
-
     const filtered = plants.filter(plant => plant.environments.includes(enviroment));
 
     setfilteredPlants(filtered);
@@ -87,10 +86,13 @@ const PlantSelect = () => {
     if (distance < 1) {
       return;
     }
-
-    setLoadingMore(true);
-    setPage(oldValue => oldValue + 1);
-    fetchPlants();
+    if (plants.length >= 10) {
+      setLoadingMore(false);
+    } else {
+      setLoadingMore(true);
+      setPage(oldValue => oldValue + 1);
+      fetchPlants();
+    }
   }
 
   if (loading) {
@@ -107,7 +109,7 @@ const PlantSelect = () => {
         <FlatList data={enviroments} keyExtractor={item => item.key} renderItem={({ item }) => (<EnviromentButton title={item.title} active={item.key === environmentSelected} onPress={() => { handleEnvironmentSelected(item.key) }} />)} contentContainerStyle={styles.enviromentList} horizontal showsHorizontalScrollIndicator={false} />
       </View>
       <View style={styles.plants}>
-        <FlatList data={plants} keyExtractor={item => String(item.id)} renderItem={({ item: plant }) => (<PlantCardPrimary data={plant} />)} numColumns={2} showsVerticalScrollIndicator={false} onEndReachedThreshold={0.1} onEndReached={({ distanceFromEnd }) => handleFetchMore(distanceFromEnd)} ListFooterComponent={loadingMore ? <ActivityIndicator color={colors.green} /> : <></>} />
+        <FlatList data={filteredPlants} keyExtractor={item => String(item.id)} renderItem={({ item: plant }) => (<PlantCardPrimary data={plant} />)} numColumns={2} showsVerticalScrollIndicator={false} onEndReachedThreshold={0.1} onEndReached={({ distanceFromEnd }) => handleFetchMore(distanceFromEnd)} ListFooterComponent={loadingMore ? <ActivityIndicator color={colors.green} /> : <></>} />
       </View>
 
     </View>);

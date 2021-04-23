@@ -9,7 +9,7 @@ interface EnviromentButtonProps extends RectButtonProps {
   active?: boolean;
 }
 
-const EnviromentButton = ({ title, active = false, ...rest }: EnviromentButtonProps) => {
+const EnviromentButton = ({ title = "all", active = false, ...rest }: EnviromentButtonProps) => {
   return (
     <RectButton style={[styles.container, active && styles.containerActive]} {...rest}>
       <Text style={[styles.text, active && styles.textActive]}>{title}</Text>
