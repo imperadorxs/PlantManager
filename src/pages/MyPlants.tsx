@@ -2,12 +2,13 @@ import { formatDistance } from 'date-fns';
 import { pt } from 'date-fns/locale';
 
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Image, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Image, Text, FlatList, Alert } from 'react-native';
 
 import waterdrop from '../assets/waterdrop.png';
 import Header from '../components/Header';
+import Load from '../components/Load';
 import PlantCardSecondary from '../components/PlantCardSecondary';
-import { loadPlant, Plant } from '../libs/storage';
+import { loadPlant, Plant, removePlant, StoragePlant } from '../libs/storage';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
@@ -16,6 +17,26 @@ const MyPlants = () => {
   const [myPlants, setMyPlants] = useState<Plant[]>([]);
   const [loading, setLoading] = useState(true);
   const [nextWatered, setNextWatered] = useState<string>('');
+
+  function handleRemove(plant: Plant) {
+    Alert.alert('Remover', `Deseja remover a ${plant.name}?`, [
+      {
+        text: 'Não 🙏',
+        style: 'cancel'
+      }, {
+        text: 'Sim 😢',
+        onPress: async () => {
+          try {
+            await removePlant(String(plant.id));
+
+            setMyPlants(oldData => (oldData.filter((item) => item.id !== plant.id)))
+          } catch (error) {
+            Alert.alert('Não foi possível remover! 😢');
+          }
+        }
+      }
+    ]);
+  }
 
   useEffect(() => {
     async function loadStorageData() {
@@ -38,6 +59,10 @@ const MyPlants = () => {
     loadStorageData();
   }, []);
 
+  if (loading) {
+    return <Load />
+  }
+
   return (
     <View style={styles.container}>
       <Header />
@@ -50,9 +75,11 @@ const MyPlants = () => {
         <Text style={styles.plantsTitle}>Próximas regadas</Text>
         <FlatList data={myPlants} keyExtractor={item => String(item.id)}
           contentContainerStyle={{ paddingBottom: 25 }}
-          renderItem={({ item: plant }) => <PlantCardSecondary data={plant} />} showsVerticalScrollIndicator={false} />
+          renderItem={({ item: plant }) => <PlantCardSecondary handleRemove={() => handleRemove(plant)} data={plant} />} showsVerticalScrollIndicator={false} />
       </View>
     </View>);
+
+
 }
 
 export default MyPlants;
