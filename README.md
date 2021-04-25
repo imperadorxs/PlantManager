@@ -1,4 +1,6 @@
-![Logo](https://imperadorxs-images.s3.amazonaws.com/plantmanagerimperadorxs.gif)
+<h1 align="center">
+    <img alt="PlantManager" width="324" height="576" src="https://imperadorxs-images.s3.amazonaws.com/plantmanagerimperadorxs.gif" />
+</h1>
 
 <h3 align="center">
   Application to register your plants and be warned when watering them, simple and pleasant interface.
