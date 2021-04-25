@@ -20,7 +20,7 @@ export default function Welcome() {
      suas plantas de{'\n'} forma fácil</Text>
       <Image source={wateringImg} style={styles.image} resizeMode='contain' />
       <Text style={styles.subtitle}>Não esqueça mais de regar suas plantas.
-      Nós cuidamos de lembar você sempre que precisar.
+      Nós cuidamos de lembrar você sempre que precisar.
     </Text>
       <TouchableOpacity onPress={handleStart} style={styles.button} activeOpacity={0.7}>
         <Feather name="chevron-right" style={styles.buttonIcon} />
