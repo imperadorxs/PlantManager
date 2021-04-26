@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { format } from 'date-fns';
-import PlantSave from '../pages/PlantSave';
 import * as Notifications from 'expo-notifications';
+2431 - 6001
+2431 - 6002
+93722 - 8827
 
 export interface Plant {
   id: number;
@@ -103,6 +105,8 @@ export async function loadPlant(): Promise<Plant[]> {
 export async function removePlant(id: string): Promise<void> {
   const data = await AsyncStorage.getItem('@plantmanager:plants');
   const plants = data ? (JSON.parse(data) as StoragePlant) : {};
+
+  await Notifications.cancelScheduledNotificationAsync(plants[id].notificationId);
 
   delete plants[id];
 
